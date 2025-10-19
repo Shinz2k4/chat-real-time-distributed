@@ -1,0 +1,123 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: chat-service
+  
+  # Disable Eureka for Docker
+  cloud:
+    discovery:
+      enabled: false
+  
+  # WebSocket Configuration
+  websocket:
+    enabled: true
+  
+  # Messaging Configuration
+  messaging:
+    simp:
+      broker:
+        relay:
+          enabled: false
+      destination:
+        prefixes: /app
+  
+  # Data Sources Configuration
+  data:
+    mongodb:
+      uri: ${MONGODB_URI_CHAT:mongodb+srv://22012842_db_user:NKxqsFtLLJb3EWRO@cluster.a0wc2wk.mongodb.net/messagedb?retryWrites=true&w=majority&appName=Cluster}
+      auto-index-creation: true
+    redis:
+      host: redis
+      port: 6379
+      database: 1
+      timeout: 2000
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1
+
+  # Security Configuration
+  security:
+    user:
+      name: admin
+      password: admin
+      roles: ADMIN
+
+  # JWT Configuration
+  jwt:
+    secret: mySecretKey123456789012345678901234567890
+    expiration: 86400 # 24 hours
+
+  # RabbitMQ Configuration
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+
+# Management and Monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Logging Configuration
+logging:
+  level:
+    com.chat.chat: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.data.mongodb: DEBUG
+    org.springframework.messaging: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/chat-service.log
+
+# Application specific configuration
+app:
+  chat:
+    # Message settings
+    message:
+      max-content-length: 5000
+      max-attachments: 10
+      max-attachment-size: 10485760 # 10MB
+      allowed-file-types: "image/*,video/*,audio/*,application/pdf,text/*"
+    
+    # Conversation settings
+    conversation:
+      max-participants: 100
+      max-name-length: 100
+      max-description-length: 500
+    
+    # WebSocket settings
+    websocket:
+      heartbeat-interval: 10000 # 10 seconds
+      connection-timeout: 30000 # 30 seconds
+      max-message-size: 1048576 # 1MB
+      max-connections-per-user: 5
+    
+    # Rate limiting
+    rate-limit:
+      messages-per-minute: 60
+      messages-per-hour: 1000
+      max-connections: 1000
+    
+    # Message retention
+    retention:
+      message-history-days: 365
+      archived-conversation-days: 30
+      deleted-message-days: 7

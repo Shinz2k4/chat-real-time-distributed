@@ -1,0 +1,55 @@
+# Environment variables for the chat application
+# Copy this file to .env and update the values
+APP_NAME="Chat Realtime"
+# Database Configuration
+# MongoDB Atlas URIs for each service
+MONGODB_URI_USER=
+MONGODB_URI_CHAT=
+MONGODB_URI_GATEWAY=
+MONGO_ROOT_USERNAME=
+MONGO_ROOT_PASSWORD=
+MONGO_DATABASE=
+
+# Redis Configuration
+REDIS_PASSWORD=redis_password
+
+# RabbitMQ Configuration
+RABBITMQ_USERNAME=guest
+RABBITMQ_PASSWORD=guest
+
+# JWT Configuration
+JWT_SECRET=your-super-secret-jwt-key-here-with-at-least-256-bits-of-entropy-for-secure-hmac-sha256-algorithm
+JWT_EXPIRATION=86400
+
+# Email Configuration
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=
+MAIL_FROM_NAME="${APP_NAME}"
+
+# Firebase Configuration (for push notifications)
+FIREBASE_PROJECT_ID=
+FIREBASE_PRIVATE_KEY=
+FIREBASE_CLIENT_EMAIL=
+
+# Application URLs
+API_URL=http://localhost:8080
+WS_URL=ws://localhost:8080/ws
+FRONTEND_URL=http://localhost:3000
+
+# Logging Configuration
+LOG_LEVEL=INFO
+LOG_FILE_PATH=./logs
+
+# Security Configuration
+CORS_ALLOWED_ORIGINS=http://localhost:3000,https://yourdomain.com
+RATE_LIMIT_REQUESTS_PER_MINUTE=60
+RATE_LIMIT_REQUESTS_PER_HOUR=1000
+
+# Monitoring Configuration
+PROMETHEUS_ENABLED=true
+GRAFANA_ENABLED=true

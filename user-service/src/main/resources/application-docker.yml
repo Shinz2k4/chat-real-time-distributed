@@ -1,0 +1,120 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: user-service
+  
+  # Disable Eureka for Docker
+  cloud:
+    discovery:
+      enabled: false
+  
+  # Data Sources Configuration
+  data:
+    mongodb:
+      uri: ${MONGODB_URI_USER:mongodb+srv://22012842_db_user:NKxqsFtLLJb3EWRO@cluster.a0wc2wk.mongodb.net/userdb?retryWrites=true&w=majority&appName=Cluster}
+      auto-index-creation: false
+    redis:
+      host: redis
+      port: 6379
+      database: 0
+      timeout: 2000
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1
+
+  # Security Configuration
+  security:
+    user:
+      name: admin
+      password: admin
+      roles: ADMIN
+
+  # JWT Configuration
+  jwt:
+    secret: ${JWT_SECRET:your-super-secret-jwt-key-here-with-at-least-256-bits-of-entropy-for-secure-hmac-sha256-algorithm}
+    expiration: 86400 # 24 hours
+
+  # Mail Configuration (Disabled)
+  mail:
+    host: localhost
+    port: 587
+    username: disabled
+    password: disabled
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  # RabbitMQ Configuration
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+
+# Management and Monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  health:
+    mail:
+      enabled: false
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Logging Configuration
+logging:
+  level:
+    com.chat.user: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.data.mongodb: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/user-service.log
+
+# Application specific configuration
+app:
+  user:
+    # Password requirements
+    password:
+      min-length: 8
+      require-uppercase: true
+      require-lowercase: true
+      require-numbers: true
+      require-special-chars: true
+    
+    # Email verification
+    email-verification:
+      enabled: false
+      token-expiry: 24 # hours
+    
+    # Password reset
+    password-reset:
+      token-expiry: 1 # hours
+    
+    # Presence settings
+    presence:
+      offline-timeout: 300 # seconds (5 minutes)
+      status-update-interval: 60 # seconds
+    
+    # Search settings
+    search:
+      max-results: 50
+      min-search-length: 2

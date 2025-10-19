@@ -1,0 +1,118 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: notification-service
+  
+  # Disable Eureka for Docker
+  cloud:
+    discovery:
+      enabled: false
+  
+  # Data Sources Configuration
+  data:
+    mongodb:
+      uri: ${MONGODB_URI_NOTIFICATION:mongodb+srv://22012842_db_user:NKxqsFtLLJb3EWRO@cluster.a0wc2wk.mongodb.net/notificationdb?retryWrites=true&w=majority&appName=Cluster}
+      auto-index-creation: true
+    redis:
+      host: redis
+      port: 6379
+      database: 2
+      timeout: 2000
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1
+
+  # Security Configuration
+  security:
+    user:
+      name: admin
+      password: admin
+      roles: ADMIN
+
+  # JWT Configuration
+  jwt:
+    secret: mySecretKey123456789012345678901234567890
+    expiration: 86400 # 24 hours
+
+  # Mail Configuration
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: your-email@gmail.com
+    password: your-app-password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  # RabbitMQ Configuration
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+
+# Management and Monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Logging Configuration
+logging:
+  level:
+    com.chat.notification: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.data.mongodb: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/notification-service.log
+
+# Application specific configuration
+app:
+  notification:
+    # Push notification settings
+    push:
+      fcm:
+        server-key: "your-firebase-server-key"
+        project-id: "your-firebase-project-id"
+    
+    # Email notification settings
+    email:
+      from: "noreply@chatapp.com"
+      reply-to: "support@chatapp.com"
+      templates:
+        welcome: "templates/welcome-email.html"
+        password-reset: "templates/password-reset-email.html"
+        friend-request: "templates/friend-request-email.html"
+    
+    # Notification settings
+    notification:
+      max-retries: 3
+      retry-delay: 5000 # milliseconds
+      batch-size: 100
+      cleanup-days: 30
+    
+    # Rate limiting
+    rate-limit:
+      notifications-per-minute: 60
+      notifications-per-hour: 1000
+      max-queue-size: 10000

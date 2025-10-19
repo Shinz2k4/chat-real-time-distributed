@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: chat-app
+
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - secrets.yaml
+  - mongodb.yaml
+  - redis.yaml
+  - rabbitmq.yaml
+  - eureka.yaml
+  - gateway.yaml
+  - user-service.yaml
+  - chat-service.yaml
+  - notification-service.yaml
+  - frontend.yaml
+  - ingress.yaml
+  - monitoring.yaml
+
+commonLabels:
+  app: chat-application
+  version: v1.0.0
+
+images:
+  - name: chat-gateway
+    newTag: v1.0.0
+  - name: chat-user-service
+    newTag: v1.0.0
+  - name: chat-chat-service
+    newTag: v1.0.0
+  - name: chat-notification-service
+    newTag: v1.0.0
+  - name: chat-frontend
+    newTag: v1.0.0
